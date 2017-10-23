@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huayi.sys.dao.SysRoleMenuMapper">
+	<resultMap type="com.huayi.sys.model.SysRoleMenu" id="resultMap">
+		<id column="id" property="id"/>
+		<result column="role_id" property="roleId"/>
+		<result column="menu_id" property="menuId"/>
+		<result column="enable" property="enable"/>
+		<result column="remark" property="remark"/>
+		<result column="create_by" property="createBy"/>
+		<result column="create_time" property="createTime"/>
+		<result column="update_by" property="updateBy"/>
+		<result column="update_time" property="updateTime"/>
+	</resultMap>
+	
+	<sql id="allFields">
+	id,role_id,menu_id,enable,remark,create_by,create_time,update_by,update_time
+	</sql>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Object">
+		inert into sys_role_menu 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="menuId != null">
+				menu_id,
+			</if>
+			<if test="enable != null">
+				enable,
+			</if>
+			<if test="remark != null and remark != ''">
+				remark,
+			</if>
+			<if test="createBy != null and createBy != ''">
+				create_by,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="roleId != null">
+				#{roleId},
+			</if>
+			<if test="menuId != null">
+				#{menuId},
+			</if>
+			<if test="enable != null">
+				#{enable},
+			</if>
+			<if test="remark != null and remark != ''">
+				#{deptremarkId},
+			</if>
+			<if test="createBy != null and createBy != ''">
+				#{createBy},
+			</if>
+			<if test="createTime != null">
+				#{createTime},
+			</if>
+		</trim>
+	</insert>
+	
+	<insert id="insertBatch" parameterType="Object">
+		INSERT INTO sys_role_menu (role_id,menu_id,enable,create_by,create_time)  
+	    VALUES   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (#{item.roleId},#{item.menuId},#{item.enable},#{item.createBy},#{item.createTime})  
+	    </foreach>  
+	</insert>
+	
+
+	<!-- 根据id查询 -->
+	<select id="selectByPrimaryKey"  resultMap="resultMap" parameterType="java.lang.Long">
+		select <include refid="allFields" />
+		 from sys_role_menu where id = #{id}
+	</select>
+	
+	<delete id="deleteAllByPrimaryKey" parameterType="Object">
+		delete from sys_role_menu
+		where id in
+		<foreach item="id" collection="list" open="(" close=")" separator=",">
+             #{id}
+        </foreach>
+	</delete>
+	
+	<!-- 根据roleId查询 -->
+	<select id="selectByRoleId"  resultMap="resultMap" parameterType="java.lang.Long">
+		select <include refid="allFields" />
+		from sys_role_menu where role_id = #{roleId}
+	</select>
+	
+	<!-- 根据roleIds查询 -->
+	<select id="selectAllByRoleIds"  resultMap="resultMap" parameterType="java.lang.Long">
+		select <include refid="allFields" />
+		where role_id in
+		<foreach item="roleId" collection="list" open="(" close=")" separator=",">
+             #{roleId}
+        </foreach>
+	</select>
+	
+
+	<!-- 根据roleIds删除记录 -->
+	<delete id="deleteAllByRoleIds" parameterType="Object">
+		delete from sys_role_menu
+		where role_id in
+		<foreach item="roleId" collection="list" open="(" close=")" separator=",">
+             #{roleId}
+        </foreach>
+	</delete>
+
+	
+	<!-- 根据menuIds删除记录 -->
+	<delete id="deleteAllByMenuIds" parameterType="Object">
+		delete from sys_role_menu
+		where menu_id in
+		<foreach item="menuId" collection="list" open="(" close=")" separator=",">
+             #{menuId}
+        </foreach>
+	</delete>
+	
+	<select id="queryMenuIdByRoleId" parameterType="Object" resultType="Long">
+		select menu_id from sys_role_menu where role_id = #{roleId}
+	</select>
+	
+	<delete id="deleteByRecord" parameterType="Object">
+		delete from sys_role_menu where role_id = #{roleId} and menu_id = #{menuId}
+	</delete>
+</mapper>

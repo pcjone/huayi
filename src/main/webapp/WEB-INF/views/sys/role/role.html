@@ -1,0 +1,138 @@
+<#assign bathPath=springMacroRequestContext.getContextPath() />
+<!-- 引入自定义标签 -->
+<#include "/tags/tag.html"/>
+<!-- 引入本地标签 -->
+<#include "/tags/local_tags.html"/>
+<!DOCTYPE html>
+<html>
+<!-- 引入css文件 -->
+<#include "/public/header.html"/>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>${title}</h5>
+				<div class="ibox-tools">
+					<a class="collapse-link" data-toggle="collapse" href="#collapseOne"> <i
+						class="fa fa-chevron-up"></i>
+					</a>
+					<a class="close-link"> <i class="fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+			<div id="collapseOne" class="ibox-content collapse in">
+				<div class="row">
+					<form method="post" class="form-horizontal" id="searchForm">
+						<div class="col-sm-3 col-md-3">
+							<@input_local id="roleName_search" name="roleName" value="" text="角色名称"/>						
+						</div>
+						<div class="col-sm-3 col-md-3">
+							<@select_tag id='roleType_search' name='roleType' value='ROLE_TYPE' text='角色类型' check="true"/>
+						</div>
+						<div class="col-sm-3 col-md-3">
+							 <@select_tag id='enable_search' name='enable' value='ENABLE' text='状态' check="true"/>
+						</div>
+						
+						<div class="col-sm-3 col-md-3">
+							<div style="float: right;">
+								<button type="button" class="btn btn-sm btn-success" id="searchBtn">
+									&nbsp;查询 <i class="fa fa-arrow-right icon-on-right"></i>
+								</button>
+								<button type="button" class="btn btn-sm btn-reset" id="reset">
+									&nbsp;重置 <i class="fa fa-undo"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					
+				</div>
+				<hr>
+				<div class="btn-group hidden-xs" id="toolbar" role="group">
+					<@shiro.hasPermission name="sys.role.add"> 	
+					<button id="add" type="button" class="btn btn-outline btn-default">
+						<i class="glyphicon glyphicon-plus" aria-hidden="true"></i>&nbsp;新增
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="sys.role.update"> 
+					<button id="edit" type="button" class="btn btn-outline btn-default">
+						<i class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;编辑
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="sys.role.cancel"> 
+					<button id="cancel" type="button" class="btn btn-outline btn-default">
+						<i class="glyphicon glyphicon-trash" aria-hidden="true"></i>&nbsp;锁定
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="sys.role.delete"> 
+					<button id="delete" type="button" class="btn btn-outline btn-default">
+						<i class="glyphicon glyphicon-remove-circle" aria-hidden="true"></i>&nbsp;删除
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="sys.role.menuPermission">	
+					<button id="roleManager" type="button" class="btn btn-outline btn-default">
+						<i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>&nbsp;权限管理
+					</button>
+					</@shiro.hasPermission>
+				</div>
+				<table id="data-list-table">
+					
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content animated fadeIn">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h1 class="modal-title"></h1>
+				</div>
+				<div class="modal-body">
+					 <form class="form-horizontal m-t" action="save" method="post" id="signupForm">
+					 		<input id="id" name="id" type="text" style="display:none"/>
+					 		<@input_local id="roleName" name="roleName" value="" text="角色名称:"/>
+                            <@select_tag id='roleType' name='roleType' value='ROLE_TYPE' text='角色类型:' check="false"/>
+                            
+                        </form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="save">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="modal inmodal" id="treeModal" tabindex="-1" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content animated fadeIn">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h1 class="modal-title">权限编辑</h1>
+				</div>
+				<div class="modal-body">
+					<input id="curRoleId" type="hidden"/>
+					<form class="form-horizontal m-t">
+						<div id="roleTree"></div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="treeSave">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<#include "/public/base_js.html"/>
+	<script src="${bathPath}/resources/js/sys/sysRole.js"></script>
+</body>
+</html>

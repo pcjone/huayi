@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huayi.sys.dao.SysMenuMapper">
+	<resultMap type="com.huayi.sys.model.SysMenu" id="resultMap">
+		<id column="id" property="id"/>
+		<result column="menu_name" property="menuName"/>
+		<result column="menu_type" property="menuType"/>
+		<result column="parent_id" property="parentId"/>
+		<result column="iconcls" property="iconcls"/>
+		<result column="request" property="request"/>
+		<result column="expand" property="expand"/>
+		<result column="sort_no" property="sortNo"/>
+		<result column="is_show" property="isShow"/>
+		<result column="permission" property="permission"/>
+		<result column="enable" property="enable"/>
+		<result column="remark" property="remark"/>
+		<result column="create_by" property="createBy"/>
+		<result column="create_time" property="createTime"/>
+		<result column="update_by" property="updateBy"/>
+		<result column="update_time" property="updateTime"/>
+	</resultMap>
+	
+	<sql id="allFields">
+		id,menu_name,menu_type,parent_id,iconcls,request,expand,sort_no,is_show,
+		permission,enable,remark,create_by,create_time,update_by,update_time
+	</sql>
+	
+	<sql id="whereSql">
+	<where>
+		1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="menuName !=  null and menuName != ''">
+			and menu_name = #{menuName}
+		</if>
+		<if test="menuType != null">
+			and menu_type = #{menuType}
+		</if>
+		<if test="parentId != null">
+			and parent_id = #{parentId}
+		</if>
+		<if test="iconcls != null and iconcls != ''">
+			and iconcls = #{iconcls}
+		</if>
+		<if test="request != null and request != ''">
+			and request = #{request}
+		</if>
+		<if test="expand != null">
+			and expand = #{expand}
+		</if>
+		<if test="sortNo != null">
+			and sort_no = #{sortNo}
+		</if>
+		<if test="isShow != null">
+			and is_show = #{isShow}
+		</if>
+		<if test="permission != null and permission != ''">
+			and permission = #{permission}
+		</if>
+		<if test="enable != null">
+			and enable = #{enable}
+		</if>
+	</where>
+	</sql>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Object">
+		insert into sys_menu
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				id,
+			</if>
+			<if test="menuName != null and menuName != ''">
+				 menu_name,
+			</if>
+			<if test="menuType != null">
+				 menu_type,
+			</if>
+			<if test="parentId != null">
+				 parent_id,
+			</if>
+			<if test="iconcls != null and iconcls != ''">
+				 iconcls,
+			</if>
+			<if test="request != null and request != ''">
+				 request,
+			</if>
+			<if test="expand != null">
+				 expand,
+			</if>
+			<if test="sortNo != null">
+				 sort_no,
+			</if>
+			<if test="isShow != null">
+				 is_show,
+			</if>
+			<if test="permission != null and permission != ''">
+				 permission,
+			</if>
+			<if test="enable != null">
+				 enable,
+			</if>
+			<if test="remark != null and remark != ''">
+				remark,
+			</if>
+			<if test="createBy != null and createBy != ''">
+				create_by,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		values 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="menuName != null and menuName != ''">
+				 #{menuName},
+			</if>
+			<if test="menuType != null">
+				 #{menuType},
+			</if>
+			<if test="parentId != null">
+				 #{parentId},
+			</if>
+			<if test="iconcls != null and iconcls != ''">
+				 #{iconcls},
+			</if>
+			<if test="request != null and request != ''">
+				 #{request},
+			</if>
+			<if test="expand != null">
+				 #{expand},
+			</if>
+			<if test="sortNo != null">
+				 #{sortNo},
+			</if>
+			<if test="isShow != null">
+				 #{isShow},
+			</if>
+			<if test="permission != null and permission != ''">
+				 #{permission},
+			</if>
+			<if test="enable != null">
+				 #{enable},
+			</if>
+			<if test="remark != null and remark != ''">
+				#{remark},
+			</if>
+			<if test="createBy != null and createBy != ''">
+				#{createBy},
+			</if>
+			<if test="createTime != null">
+				#{createTime},
+			</if>
+		</trim>
+	</insert>
+	<!-- 删除记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="Object">
+		delete from sys_menu where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 -->
+	<select id="selectByPrimaryKey"  resultMap="resultMap" parameterType="java.lang.Long">
+		select <include refid="allFields" />
+		 from sys_menu
+		 where id = #{id}
+	</select>
+
+	<!-- 列表总数-->
+	<select id="query" resultType="java.lang.Long"  parameterType="Object">
+		select id from sys_menu
+		<include refid="whereSql"></include>
+	</select>
+	
+	<select id="queryForList" parameterType="Object" resultMap="resultMap">
+		select 
+			<include refid="allFields"></include>
+		from sys_menu
+			<include refid="whereSql"></include>
+	</select>
+	
+	<select id="querySysMenuAll" parameterType="Object" resultMap="resultMap">
+		select <include refid="allFields"></include> from sys_menu
+		<where>
+			<if test="menuType != null">
+				and menu_type != #{menuType}
+			</if>
+		</where>
+	</select>
+	
+	<select id="querySysMenuSon" parameterType="Object" resultMap="resultMap">
+		select <include refid="allFields"></include> from sys_menu where parent_id = #{parentId}
+	</select>
+	
+	<delete id="deleteAllByPrimaryKey" parameterType="Object">
+		delete from sys_menu
+		where id in
+		<foreach item="id" collection="list" open="(" close=")" separator=",">
+             #{id}
+        </foreach>
+	</delete>
+	
+	<update id="updateByPrimaryKey" parameterType="Object">
+		update sys_menu
+		<trim prefix="set" suffixOverrides=",">
+			<if test="menuName != null and menuName != ''">
+				menu_name = #{menuName},
+			</if>
+			<if test="menuType != null">
+				menu_type = #{menuType},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId},
+			</if>
+			<if test="iconcls != null and iconcls != ''">
+				iconcls = #{iconcls},
+			</if>
+			<if test="request != null and request != ''">
+				request = #{request},
+			</if>
+			<if test="expand != null">
+				expand = #{expand},
+			</if>
+			<if test="sortNo != null">
+				sort_no = #{sortNo},
+			</if>
+			<if test="isShow != null">
+				is_show = #{isShow},
+			</if>
+			<if test="permission != null and permission != ''">
+				permission = #{permission},
+			</if>
+			<if test="enable != null">
+				<![CDATA[ enable = #{enable},]]>
+			</if>			
+			<if test="remark != null and remark != '' ">
+				<![CDATA[ remark = #{remark},]]>
+			</if>		
+			<if test="updateBy != null and updateBy != '' ">
+				<![CDATA[ update_by = #{updateBy},]]>
+			</if>			
+			<if test="updateTime != null">
+				<![CDATA[ update_time = #{updateTime},]]>
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+	
+	<update id="updateAllByPrimaryKey" parameterType="Object">
+		update sys_menu
+		<trim prefix="set" suffixOverrides=",">
+		    <if test="enable != null " >
+		  	<![CDATA[  enable = #{enable}, ]]>
+		    </if>
+		    <if test="updateBy != null and updateBy != '' " >
+		  	<![CDATA[  update_by = #{updateBy}, ]]>
+		    </if>
+		    <if test="updateTime != null " >
+		  	<![CDATA[  update_time = #{updateTime}, ]]>
+		    </if>
+		</trim>
+	    where id in
+		<foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+		    #{id }
+		</foreach>
+	</update>
+	
+	
+	<!-- ==================================分割线================================== -->
+	<select id="queryMenuListByUserId" parameterType="Object" resultMap="resultMap">
+		select distinct
+			<include refid="allFields"></include>
+		from sys_menu
+		where enable = #{enable} and menu_type != #{menuType} 
+			and id in (
+			select srm.menu_id 
+				from sys_role_menu srm where srm.enable = #{enable} and exists (
+				select sr.id from sys_user_role sur 
+					left join sys_role sr on sur.role_id = sr.id 
+				where sur.enable = #{enable} and sur.user_id = #{userId} and sur.role_id = srm.role_id)
+		)
+	</select>
+	
+	<select id="querySysMenuByRoleId"  parameterType="Object" resultMap="resultMap">
+		select distinct
+			<include refid="allFields"></include>
+		from sys_menu
+		where enable = #{enable} and menu_type != #{menuType} 
+		and id in (
+			select srm.menu_id from sys_role_menu srm where srm.role_id = #{roleId} 
+			and srm.enable = #{enable}
+		)
+	</select>
+	
+	<select id="queryListMenuTree" parameterType="Object" resultMap="resultMap">
+		select 
+			<include refid="allFields"></include>
+		from sys_menu where 1=1 
+		<if test="menuType != null">
+		 and menu_type != #{menuType} 
+		</if>
+	</select>
+	
+</mapper>

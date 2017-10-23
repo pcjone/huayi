@@ -1,0 +1,88 @@
+<#assign bathPath=springMacroRequestContext.getContextPath() />
+<!-- 引入自定义标签 -->
+<#include "/tags/tag.html"/>
+<!-- 引入本地标签 -->
+<#include "/tags/local_tags.html"/>
+<!DOCTYPE html>
+<html>
+<!-- 引入css文件 -->
+<#include "/public/header.html"/>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>${title}</h5>
+				<div class="ibox-tools">
+					<a class="collapse-link" data-toggle="collapse" href="#collapseOne"> <i
+						class="fa fa-chevron-up"></i>
+					</a>
+					<a class="close-link"> <i class="fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+			<div id="collapseOne" class="ibox-content collapse in">
+				<div class="row">
+					<form method="post" class="form-horizontal" id="searchForm">
+						<div class="col-sm-3 col-md-3">
+							<div class="form-group">
+                                <@select_group id='groupId_search' name='groupId' value='' text='分组名称' check="true"/>	
+                            </div>
+						</div>
+						<div class="col-sm-3 col-md-3">
+							<@select_tag id='resultCode_search' name='resultCode' value='RESULT_CODE' text='执行结果' check="true"/>
+						</div>
+						<div class="col-sm-3 col-md-3">
+						</div>
+
+						<div class="col-sm-3 col-md-3">
+							<div style="float: right;">
+								<button type="button" class="btn btn-sm btn-success" id="searchBtn">
+									&nbsp;查询 <i class="fa fa-arrow-right icon-on-right"></i>
+								</button>
+								<button type="button" class="btn btn-sm btn-reset" id="reset">
+									&nbsp;重置 <i class="fa fa-undo"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					
+				</div>
+				<hr>
+				<div class="btn-group hidden-xs" id="toolbar" role="group">
+					<@shiro.hasPermission name="task.execLog.delete"> 
+					<button id="delete" type="button" class="btn btn-outline btn-default">
+						<i class="glyphicon glyphicon-remove-circle" aria-hidden="true"></i>&nbsp;删除
+					</button>
+					</@shiro.hasPermission>
+				</div>
+				<table id="data-list-table">
+
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content animated fadeIn">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h1 class="modal-title">详情</h1>
+				</div>
+				<div class="modal-body">
+					 <div id="detail"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<#include "/public/base_js.html"/>
+	<script src="${bathPath}/resources/js/task/execLog.js"></script>
+</body>
+</html>

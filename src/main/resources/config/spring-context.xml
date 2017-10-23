@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+    <!-- 引入属性配置文件 -->
+	<bean
+		class="com.huayi.common.config.PropertyConfigurer">
+		<property name="locations">
+			<array>
+				<value>classpath:props/redis.properties</value>
+				<value>classpath:props/jdbc.properties</value>
+				<value>classpath:props/wechat.properties</value>
+			</array>
+		</property>
+	</bean>  
+	<!-- 扫描注解 -->
+	<context:component-scan base-package="com.huayi">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<!-- 引入SPRING配置文件 -->
+	<import resource="../spring/spring-shiro.xml"/>
+	<import resource="../spring/spring-dataSource.xml"/>
+	<import resource="../spring/spring-redis.xml"/>
+	<import resource="../spring/spring-wechat.xml"/>
+	<import resource="../spring/spring-mybatis.xml"/>
+</beans>
