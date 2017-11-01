@@ -44,3 +44,22 @@
 	</div>
 </div>
 </#macro>
+
+
+<#macro select_wxapp id name value text check>
+<div class="form-group">
+	<label class="col-sm-4 control-label">${text}</label>
+	<div class="col-sm-8">
+		<@tags target="weiAppTag" value="${value}"> 
+		<select class="form-control" id="${id}" name="${name}">
+			<#if "${check}"=="true">
+				<option value="" selected>全部</option>
+			</#if>
+			<#list outTagName as apps>
+				<option value="${apps.id}">${apps.name}</option>
+			</#list>
+		</select> 
+		</@tags>
+	</div>
+</div>
+</#macro>
