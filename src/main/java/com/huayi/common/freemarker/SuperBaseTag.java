@@ -11,7 +11,6 @@ import com.huayi.common.util.StringUtils;
 * @date 2017年8月21日 下午2:25:16 
 *
  */
-@SuppressWarnings("unchecked")
 public abstract class SuperBaseTag {
 	
 	/**
@@ -19,22 +18,22 @@ public abstract class SuperBaseTag {
 	 * @param params
 	 * @return
 	 */
-	protected abstract Object result(Map params);
+	protected abstract Object result(Map<String,Object> params);
 	
 	/**
 	 * 直接强转报错，需要用Object过度一下
 	 * @param e
 	 * @return
 	 */
-	protected Long getLong(Map params,String key){
+	protected Long getLong(Map<String,Object> params,String key){
 		Object i = params.get(key);
 		return StringUtils.isBlank(i)?null:new Long(i.toString());
 	}
-	protected String getString(Map params,String key){
+	protected String getString(Map<String,Object> params,String key){
 		Object i = params.get(key);
 		return StringUtils.isBlank(i)?null:i.toString();
 	}
-	protected Integer getInt(Map params,String key){
+	protected Integer getInt(Map<String,Object> params,String key){
 		Object i = params.get(key);
 		return StringUtils.isBlank(i)?null:Integer.parseInt(i.toString());
 	}

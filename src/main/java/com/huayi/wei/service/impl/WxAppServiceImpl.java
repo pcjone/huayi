@@ -32,7 +32,7 @@ public class WxAppServiceImpl extends BaseServiceImpl<WxApp> implements WxAppSer
 
 	@Override
 	public List<WxApp> queryAll(Map<String, Object> params) {
-		return null;
+		return wxAppMapper.queryAll(params);
 	}
 
 }

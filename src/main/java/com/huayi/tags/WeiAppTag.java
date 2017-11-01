@@ -17,7 +17,7 @@ public class WeiAppTag extends SuperBaseTag{
 	private WxAppService wxAppService;
 
 	@Override
-	protected Object result(Map params) {
+	protected Object result(Map<String,Object> params) {
 		String excludeStr = null;
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		excludeStr = getString(params, "value");

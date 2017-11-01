@@ -24,7 +24,7 @@ public class SysDicTag extends SuperBaseTag {
 	private SysDicService sysDicService;
 
 	@Override
-	public Object result(Map params) {
+	public Object result(Map<String,Object> params) {
 		String excludeStr = null;
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		excludeStr = getString(params, "value");

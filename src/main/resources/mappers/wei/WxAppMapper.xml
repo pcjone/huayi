@@ -97,6 +97,12 @@
 		<include refid="whereSql"></include>
 	</select>
 	
+	<select id="queryAll" parameterType="Object" resultMap="resultMap">
+		select <include refid="allFields"></include> 
+		from wx_app
+		<include refid="whereSql"></include>
+	</select>
+	
 	<delete id="deleteAllByPrimaryKey" parameterType="Object">
 		delete from wx_app
 		where id in

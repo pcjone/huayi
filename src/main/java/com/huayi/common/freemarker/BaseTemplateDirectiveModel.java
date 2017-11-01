@@ -37,6 +37,6 @@ public abstract class BaseTemplateDirectiveModel implements TemplateDirectiveMod
 	 * @return
 	 * @throws TemplateModelException
 	 */
-	protected abstract Map<String, TemplateModel> putValue(Map params) throws TemplateModelException;
+	protected abstract Map<String, TemplateModel> putValue(Map<String,Object> params) throws TemplateModelException;
 
 }
