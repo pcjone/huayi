@@ -35,7 +35,8 @@ public class WeiUser extends BaseModel{
 	private Boolean subscribe;
 	private Double latitude;//纬度
 	private Double longitude;//经度
-	private Double precision;//精度
+	private Double precisions;//精度
+	private String label;//地点
 	public String getOpenId() {
 		return openId;
 	}
@@ -126,11 +127,17 @@ public class WeiUser extends BaseModel{
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-	public Double getPrecision() {
-		return precision;
+	public Double getPrecisions() {
+		return precisions;
 	}
-	public void setPrecision(Double precision) {
-		this.precision = precision;
+	public void setPrecisions(Double precisions) {
+		this.precisions = precisions;
+	}
+	public String getLabel() {
+		return label;
+	}
+	public void setLabel(String label) {
+		this.label = label;
 	}
 	
 }

@@ -19,7 +19,8 @@
 		<result column="remark" property="remark"/>
 		<result column="latitude" property="latitude"/>
 		<result column="longitude" property="longitude"/>
-		<result column="precision" property="precision"/>
+		<result column="precisions" property="precisions"/>
+		<result column="label" property="label"/>
 	</resultMap>
 	<sql id="allFields">
 				id,
@@ -39,7 +40,8 @@
 	       		remark,
 	       		latitude,
 	       		longitude,
-	       		precision
+	       		precisions,
+	       		label
 	</sql>
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Object">
 		insert into wei_user
@@ -98,8 +100,11 @@
 			<if test="longitude != null">
 				 longitude,
 			</if>
-			<if test="precision != null">
-				 precision,
+			<if test="precisions != null">
+				 precisions,
+			</if>
+			<if test="label != null and label != ''">
+				label,
 			</if>
 		</trim>
 		values 
@@ -158,8 +163,11 @@
 			<if test="longitude != null">
 				 #{longitude},
 			</if>
-			<if test="precision != null">
-				 #{precision},
+			<if test="precisions != null">
+				 #{precisions},
+			</if>
+			<if test="label != null and label != ''">
+				#{label},
 			</if>
 		</trim>
 	</insert>
@@ -250,8 +258,11 @@
 			<if test="longitude != null">
 				longitude = #{longitude},
 			</if>
-			<if test="precision != null">
-				precision = #{precision},
+			<if test="precisions != null">
+				precisions = #{precisions},
+			</if>
+			<if test="label != null and label != ''">
+				label = #{label},
 			</if>
 		</trim>
 		where id = #{id}
@@ -308,8 +319,11 @@
 			<if test="longitude != null">
 				and longitude = #{longitude}
 			</if>
-			<if test="precision != null">
-				and precision = #{precision}
+			<if test="precisions != null">
+				and precisions = #{precisions}
+			</if>
+			<if test="label != null and label != ''">
+				and label = #{label}
 			</if>
 		</where>
 	</sql>

@@ -44,9 +44,10 @@ public class LocationHandler implements WxMpMessageHandler{
             try {
                 String content = "感谢反馈，您的的地理位置已收到！";
                 WeiUser user = weiUserService.queryByOpenId(wxMessage.getFromUser());
-                user.setLatitude(wxMessage.getLatitude());
-                user.setLongitude(wxMessage.getLongitude());
-                user.setPrecision(wxMessage.getPrecision());
+                user.setLatitude(wxMessage.getLocationX());
+                user.setLongitude(wxMessage.getLocationY());
+                user.setPrecisions(wxMessage.getPrecision());
+                user.setLabel(wxMessage.getLabel());
                 weiUserService.updateDB(user);
                 WxMpXmlOutTextMessage message = WxMpXmlOutMessage.TEXT()
         				.content(content).fromUser(wxMessage.getToUser())
