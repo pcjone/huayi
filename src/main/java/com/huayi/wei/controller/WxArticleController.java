@@ -132,4 +132,14 @@ public class WxArticleController extends BaseController{
 			}
 		}
 	}
+	
+	@RequestMapping(value="/newsSet",method=RequestMethod.POST)
+	public void newsSet(Long[] ids,Long id,HttpServletRequest request, HttpServletResponse response) {
+		WxArticle wxArticle= wxArticleService.queryDBById(id);
+		wxArticle.setArticleCount(Long.valueOf(ids.length));
+		wxArticleService.updateDB(wxArticle);
+		wxArticleService.newsSet(ids,id);
+		sendSuccessMessage(response,"关联成功");
+		
+	}
 }

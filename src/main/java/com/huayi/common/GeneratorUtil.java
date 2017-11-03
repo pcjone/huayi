@@ -34,7 +34,7 @@ public class GeneratorUtil {
 
 	private final String diskPath = "/Users/panlei/code/";
 	// 表名称
-	private final String tableName = "wx_menu";
+	private final String tableName = "wx_article_news";
 	// 系统名称
 	private final String sysName = "wei";
 

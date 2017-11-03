@@ -17,6 +17,9 @@
 		<result column="groupId" property="groupId"/>
 		<result column="subscribe" property="subscribe"/>
 		<result column="remark" property="remark"/>
+		<result column="latitude" property="latitude"/>
+		<result column="longitude" property="longitude"/>
+		<result column="precision" property="precision"/>
 	</resultMap>
 	<sql id="allFields">
 				id,
@@ -33,7 +36,10 @@
 				subscribeTime,
 				groupId,
 				subscribe,
-	       		remark
+	       		remark,
+	       		latitude,
+	       		longitude,
+	       		precision
 	</sql>
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Object">
 		insert into wei_user
@@ -86,6 +92,15 @@
 			<if test="remark != null and remark != ''">
 				remark,
 			</if>
+			<if test="latitude != null">
+				 latitude,
+			</if>
+			<if test="longitude != null">
+				 longitude,
+			</if>
+			<if test="precision != null">
+				 precision,
+			</if>
 		</trim>
 		values 
 		<trim prefix="(" suffix=")" suffixOverrides="," >
@@ -136,6 +151,15 @@
 			</if>
 			<if test="remark != null and remark != ''">
 				#{remark},
+			</if>
+			<if test="latitude != null">
+				 #{latitude},
+			</if>
+			<if test="longitude != null">
+				 #{longitude},
+			</if>
+			<if test="precision != null">
+				 #{precision},
 			</if>
 		</trim>
 	</insert>
@@ -220,6 +244,15 @@
 			<if test="remark != null and remark != '' ">
 				<![CDATA[ remark = #{remark},]]>
 			</if>
+			<if test="latitude != null">
+				latitude = #{latitude},
+			</if>
+			<if test="longitude != null">
+				longitude = #{longitude},
+			</if>
+			<if test="precision != null">
+				precision = #{precision},
+			</if>
 		</trim>
 		where id = #{id}
 	</update>
@@ -268,6 +301,15 @@
 			</if>
 			<if test="subscribe != null">
 				and subscribe = #{subscribe}
+			</if>
+			<if test="latitude != null">
+				and latitude = #{latitude}
+			</if>
+			<if test="longitude != null">
+				and longitude = #{longitude}
+			</if>
+			<if test="precision != null">
+				and precision = #{precision}
 			</if>
 		</where>
 	</sql>

@@ -1,5 +1,6 @@
 package com.huayi.wei.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class WxNewsServiceImpl extends BaseServiceImpl<WxNews> implements WxNews
 	@Override
 	protected BaseMapper<WxNews> getMapper() {
 		return wxNewsMapper;
+	}
+
+	@Override
+	public List<WxNews> queryAllList(Map<String, Object> params) {
+		return wxNewsMapper.queryAllList(params);
 	}
 
 }

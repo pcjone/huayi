@@ -21,6 +21,8 @@ public class WxArticle extends BaseModel{
 	
 	private List<WxNews> articles;
 	
+	private String keyValue;
+	
 	private String title;
 	
 	private String description;
@@ -56,4 +58,13 @@ public class WxArticle extends BaseModel{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getKeyValue() {
+		return keyValue;
+	}
+
+	public void setKeyValue(String keyValue) {
+		this.keyValue = keyValue;
+	}
+	
 }

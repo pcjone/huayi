@@ -4,7 +4,11 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.huayi.wei.model.WeiUser;
+import com.huayi.wei.service.WeiUserService;
 
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -26,15 +30,24 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutTextMessage;
 public class LocationHandler implements WxMpMessageHandler{
 	
 	private Logger logger = LoggerFactory.getLogger(LocationHandler.class);
+	
+	@Autowired
+	private WeiUserService weiUserService;
 
 	@Override
 	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService,
 			WxSessionManager sessionManager) throws WxErrorException {
-		
+		logger.info("地理位置上报处理");
 		if (wxMessage.getMsgType().equals(WxConsts.XML_MSG_LOCATION)) {
+			logger.info("接收处理用户发送的地理位置消息");
             //TODO 接收处理用户发送的地理位置消息
             try {
                 String content = "感谢反馈，您的的地理位置已收到！";
+                WeiUser user = weiUserService.queryByOpenId(wxMessage.getFromUser());
+                user.setLatitude(wxMessage.getLatitude());
+                user.setLongitude(wxMessage.getLongitude());
+                user.setPrecision(wxMessage.getPrecision());
+                weiUserService.updateDB(user);
                 WxMpXmlOutTextMessage message = WxMpXmlOutMessage.TEXT()
         				.content(content).fromUser(wxMessage.getToUser())
         				.toUser(wxMessage.getFromUser()).build();

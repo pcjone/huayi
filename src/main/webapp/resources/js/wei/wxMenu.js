@@ -1,4 +1,7 @@
 $(function() {
+	//加载字典
+	var categorys=['ENABLE'];
+	loadDic(categorys);
 	// 1.初始化Table
 	var oTable = new TableInit();
 	oTable.Init();
@@ -76,6 +79,7 @@ var TableInit = function() {
 				title : '公众号appId',
 				valign: 'middle',
 				sortable:true,
+				visible : false
 			},
 			{
 				field : 'text',
@@ -84,7 +88,7 @@ var TableInit = function() {
 				sortable:true,
 			},
 			{
-				field : 'key',
+				field : 'keyValue',
 				title : '关键字',
 				valign: 'middle',
 				sortable:true,
@@ -126,6 +130,7 @@ var TableInit = function() {
 			pageNum : params.pageNumber, // 页码
 			sort : params.sortName,
 			order : params.sortOrder,
+			appId:$("#appId_search").val(),
 		};
 		return temp;
 	}
@@ -147,13 +152,13 @@ var ButtonInit = function() {
 		
 		<!-- 重置 -->
 		$("#reset").click(function(){
-
+			
 		});
 		
 		
 		//新增功能
 		$("#add").click(function(){
-			$(".modal-title").html("新增数据字典");
+			$(".modal-title").html("新增菜单");
 			$('#signupForm')[0].reset();
 			$("#myModal").modal('show');
 		});
@@ -166,7 +171,14 @@ var ButtonInit = function() {
 				return;
 			}
 			$("#id").val(rows[0].id);
-			
+			$("#appId").val(rows[0].appId);
+			$("#parentId").val(rows[0].parentId);
+			$("#text").val(rows[0].text);
+			$("#keyValue").val(rows[0].keyValue);
+			$("#link").val(rows[0].link);
+			$("#type").val(rows[0].type);
+			$("#sort").val(rows[0].sort);
+			$(".modal-title").html("编辑菜单");
 			$("#myModal").modal('show');
 		});
 		
@@ -257,6 +269,8 @@ var ButtonInit = function() {
 		       
 		    });
 		});
+		
+		
 	}
 	return oButtonInit;
 }
@@ -270,7 +284,30 @@ function initOtherFunction(){
 			clearForm : true, // 表示成功提交后清除所有表单字段值
 			resetForm : true,// 表示成功提交后重置所有字段
 			beforeSubmit:function(){
-				
+				var appId = $("#appId").val();
+				if(appId == null || appId.trim() == ""){
+					swal("请选择公众号", "", "error");
+					return false;
+				}
+				var type = $("#type").val();
+				if(type == null || type.trim() == ""){
+					swal("请选择菜单类型", "", "error");
+					return false;
+				}
+				if(type == "click"){
+					var keyValue = $("#keyValue").val();
+					if(keyValue == null || keyValue.trim() == ""){
+						swal("请输入关键子", "", "error");
+						return false;
+					}
+				}
+				if(type == "view"){
+					var link = $("#link").val();
+					if(link == null || link.trim() == ""){
+						swal("请输入url", "", "error");
+						return false;
+					}
+				}
 			},
 			success : function(data) {
 				if (data.success) {
@@ -287,5 +324,39 @@ function initOtherFunction(){
 			}
 		};
 		$("#signupForm").ajaxSubmit(options);
+	});
+	
+	$("#publish").click(function(){
+		var appId = $("#appId_search").val();
+		swal({
+	        title: "您确定要发布菜单吗？",
+	        type: "warning",
+	        showCancelButton: true,
+	        showLoaderOnConfirm: true,
+	        closeOnConfirm: false
+	    		}, function (isConfirm) {
+	    			if(isConfirm){
+			    		$.ajax({
+			    			url:"publish",
+			    			type : 'post',
+						async : false,
+						data : {
+							"appId" : appId
+						},
+						traditional : true,
+			    			success:function(data){
+			    				if (data.success) {
+			    					$('#data-list-table').bootstrapTable('refresh');
+			    					swal("发布成功！", "菜单发布成功！", "success");					
+			    				} else {
+			    					swal(data.msg, "", "error");
+			    				}
+			    			},
+			    			error : function(){
+			    				swal('异常提交', "", "error");
+			    			}
+			    		});
+	    			}
+	    		});
 	});
 }

@@ -132,4 +132,10 @@ public class WxMenuController extends BaseController{
 			}
 		}
 	}
+	
+	@RequestMapping(value="/publish",method=RequestMethod.POST)
+	public void publish(HttpServletRequest request, HttpServletResponse response,String appId) {
+		wxMenuService.publish(appId);
+		sendSuccessMessage(response,"发布成功");
+	}
 }

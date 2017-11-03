@@ -14,12 +14,12 @@ import org.springframework.context.i18n.LocaleContextHolder;
  * @author ShenHuaJie
  * @version 2016年5月20日 下午3:19:19
  */
-@PropertySource(value = {"classpath:i18n/messages*.properties"})
+@PropertySource(value = {"classpath:i18n/messages*.properties","classpath:props/email.properties"})
 public final class Resources {
 	/** SSH服务器配置 */
-	public static final ResourceBundle SFTP = ResourceBundle.getBundle("config/sftp");
+	public static final ResourceBundle SFTP = ResourceBundle.getBundle("props/sftp");
 	/** 邮箱服务器配置 */
-	public static final ResourceBundle EMAIL = ResourceBundle.getBundle("config/email");
+	public static final ResourceBundle EMAIL = ResourceBundle.getBundle("props/email");
 	/** 国际化信息 */
 	private static final Map<String, ResourceBundle> MESSAGES = new HashMap<String, ResourceBundle>();
 	/** 短信信息 */
@@ -52,7 +52,7 @@ public final class Resources {
 			synchronized (SMSINFO) {
 				message = SMSINFO.get(locale.getLanguage());
 				if (message == null) {
-					message = ResourceBundle.getBundle("config/sms", locale);
+					message = ResourceBundle.getBundle("props/sms", locale);
 					SMSINFO.put(locale.getLanguage(), message);
 				}
 			}

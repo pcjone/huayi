@@ -9,9 +9,13 @@
 	
 	<bean id="realm" class="com.huayi.common.shiro.MyRealm"/>
 	
+	<!-- 缓存管理 -->  
+    <bean id="cacheManager" class="com.huayi.common.cache.RedisCacheManager"></bean> 
+	
 	<!-- Shiro 安全管理器-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="realm"/>
+        <property name="cacheManager" ref="cacheManager"></property>
     </bean>
     
     <!-- Shiro 过滤器 -->
@@ -31,6 +35,7 @@
 				/login.html=anon
 				/register.html=anon
 				/wei/**=anon
+				/image/view/**=anon
 				/*.ico=anon
 				/upload/*=anon
 				/unauthorized=anon

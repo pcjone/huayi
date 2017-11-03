@@ -1,4 +1,7 @@
 $(function() {
+	//加载字典
+	var categorys=['ENABLE'];
+	loadDic(categorys);
 	// 1.初始化Table
 	var oTable = new TableInit();
 	oTable.Init();
@@ -84,6 +87,12 @@ var TableInit = function() {
 				sortable:true,
 			},
 			{
+				field : 'keyValue',
+				title : '关键字',
+				valign: 'middle',
+				sortable:true,
+			},
+			{
 				field : 'description',
 				title : '描述',
 				valign: 'middle',
@@ -94,12 +103,15 @@ var TableInit = function() {
 				title : '状态',
 				valign: 'middle',
 				sortable:true,
-				formatter : function(value, row, index) {
-					if(value == 1){
-						return "<a class='btn btn-danger btn-rounded btn-xs'>锁定<a>";
-					}else if(value == 0){
-						return "<a class='btn btn-success btn-rounded btn-xs'>有效<a>";
-					}
+				formatter : dic_value_text("ENABLE")
+			},
+			{
+				field : '1',
+				title : '操作',
+				valign: 'middle',
+				sortable:true,
+				formatter : function(index,row,value){
+					return '<a class="btn btn-white btn-bitbucket" href="javascript:chooseItem('+row.id+')"><i class="fa fa-exchange"></i>管理</a>';
 				}
 			}],
 			detailFormatter : function(index, row) {
@@ -114,6 +126,8 @@ var TableInit = function() {
 			pageNum : params.pageNumber, // 页码
 			sort : params.sortName,
 			order : params.sortOrder,
+			keyValue : $("#keyValue_search").val(),
+			enable : $("#enable_search").val(),
 		};
 		return temp;
 	}
@@ -141,7 +155,7 @@ var ButtonInit = function() {
 		
 		//新增功能
 		$("#add").click(function(){
-			$(".modal-title").html("新增数据字典");
+			$(".modal-title").html("新增多图文");
 			$('#signupForm')[0].reset();
 			$("#myModal").modal('show');
 		});
@@ -154,7 +168,10 @@ var ButtonInit = function() {
 				return;
 			}
 			$("#id").val(rows[0].id);
-			
+			$("#title").val(rows[0].title);
+			$("#keyValue").val(rows[0].keyValue);
+			$("#description").val(rows[0].description);
+			$(".modal-title").html("编辑多图文");
 			$("#myModal").modal('show');
 		});
 		
@@ -276,4 +293,132 @@ function initOtherFunction(){
 		};
 		$("#signupForm").ajaxSubmit(options);
 	});
+	
+	$("#treeSave").click(function(){
+		var id = $("#curWxArticleId").val();
+		var rows = $('#data-list-table_news').bootstrapTable('getAllSelections');
+		if (rows == null || rows.length <= 0 || rows.length > 10) {
+			swal("请选择记录，最多10条", "", "warning");
+			return;
+		}
+		var ids = [];
+		for (var i = 0; i < rows.length; i++) {
+			ids.push(rows[i].id);
+		}
+		var length = ids.length;
+		$.ajax({
+			url:"newsSet",
+			type : 'post',
+			async : false,
+			data : {
+			"ids" : ids,
+			"id":id
+		},
+		traditional : true,
+			success:function(data){
+				if (data.success) {
+					$('#data-list-table').bootstrapTable('refresh');
+					$("#treeModal").modal('hide');
+					swal("关联成功！", "您已经关联了这"+length+"条信息。", "success");
+				} else {
+					swal(data.msg, "", "error");
+				}
+			},
+			error : function(){
+				swal('异常提交', "", "error");
+			}
+		});
+	});
+}
+
+function chooseItem(id){
+	$("#curWxArticleId").val(id);
+	
+	$('#data-list-table_news').bootstrapTable({
+		url : '../wxNews/dataList', // 请求后台的URL（*）
+		method : 'post', // 请求方式（*）
+		toolbar : '', // 工具按钮用哪个容器
+		exportDataType : 'selected', //导出类型
+		striped : true, // 是否显示行间隔色
+		cache : false, // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+		pagination : true, // 是否显示分页（*）
+		sortable : true, // 是否启用排序
+		sortOrder : "asc", // 排序方式
+		queryParams : null,// 传递参数（*）
+		sidePagination : "server", // 分页方式：client客户端分页，server服务端分页（*）
+		pageNumber : 1, // 初始化加载第一页，默认第一页
+		pageSize : 10, // 每页的记录行数（*）
+		pageList : [ 10, 25, 50, 100 ], // 可供选择的每页的行数（*）
+		search : false, // 是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+		strictSearch : false,
+		showHeader : true,//是否显示列头
+		showFooter : false,//是否显示列脚
+		showColumns : true, // 是否显示所有的列
+		showRefresh : false, // 是否显示刷新按钮
+		minimumCountColumns : 2, // 最少允许的列数
+		clickToSelect : true, // 是否启用点击选中行
+		singleSelect : false,
+		height: 500, // 行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+		idField:'id',
+		uniqueId : "id", // 每一行的唯一标识，一般为主键列
+		showToggle : false, // 是否显示详细视图和列表视图的切换按钮
+		cardView : false, // 是否显示详细视图
+		detailView : false, // 是否显示父子表
+		// 设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
+		// 设置为limit可以获取limit, offset, search, sort, order
+		queryParamsType : "undefined",
+		contentType : "application/x-www-form-urlencoded",
+		columns : [
+		{
+			checkbox:true
+		},
+		{
+			field : 'id',
+			title : '序号',
+			valign: 'middle',
+			sortable:true,
+		}, 
+		{
+			field : 'title',
+			title : '标题',
+			valign: 'middle',
+			sortable:true,
+		},
+		{
+			field : 'description',
+			title : '描述',
+			valign: 'middle',
+			sortable:true,
+		},
+		{
+			field : 'picUrl',
+			title : '图片',
+			valign: 'middle',
+			sortable:true,
+			visible:false,
+			formatter:function(value){
+				return "<img src='../image/view/wx?path="+value+"' style='width:100px'/>";
+			}
+		},
+		{
+			field : 'url',
+			title : '链接地址',
+			valign: 'middle',
+			visible:false,
+			sortable:true,
+		},
+		{
+			field : 'enable',
+			title : '状态',
+			valign: 'middle',
+			sortable:true,
+			formatter : dic_value_text("ENABLE"),
+		}],
+		detailFormatter : function(index, row) {
+		},
+		onExpandRow : function(index, row, detail) {
+		}
+	});
+	
+	$("#treeModal").modal('show');
 }
