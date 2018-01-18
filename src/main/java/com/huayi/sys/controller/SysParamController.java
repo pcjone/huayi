@@ -142,7 +142,7 @@ public class SysParamController extends BaseController{
 				sendSuccessMessage(response,"新增成功");
 			}else {
 				record.setUpdateBy(getCurrUser());
-				sysParamService.updateDB(record);
+				sysParamService.updateDBAndCache(record);
 				sendSuccessMessage(response,"更新成功");
 			}
 		}
